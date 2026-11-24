@@ -1,6 +1,6 @@
 # Putting the Interval Timer online for free
 
-The timer is a **static website**: just `index.html`, `style.css` and `app.js`. There is no server code and no build step, so any static hosting service can serve it. This guide uses **GitHub Pages**, which is free. Two alternatives are listed at the end.
+The site is a **static website**: a home page (`index.html`), the interval timer (`timer.html`, `app.js`), the workout log (`workout.html`, `workout.js`) and a shared `style.css`. There is no server code and no build step, so any static hosting service can serve it. This guide uses **GitHub Pages**, which is free. Two alternatives are listed at the end.
 
 When you're done, the site will be at an address like:
 
@@ -13,7 +13,7 @@ https://<your-github-username>.github.io/interval-timer/
 ## What you need
 
 - A free GitHub account. Sign up at <https://github.com/signup>.
-- The three files from this folder: `index.html`, `style.css`, `app.js`.
+- The six files from this folder: `index.html`, `timer.html`, `workout.html`, `app.js`, `workout.js`, `style.css`.
   (`DEPLOY.md` is optional. Uploading it does no harm.)
 
 > **Important:** `index.html` must sit at the top level of the repository, not inside a subfolder. GitHub Pages looks for `index.html` there.
@@ -35,7 +35,7 @@ This is the easiest route if you haven't used git before.
 ### 2. Upload the files
 
 1. On the new, empty repository page, click the **"uploading an existing file"** link.
-2. Drag `index.html`, `style.css` and `app.js` into the upload area.
+2. Drag all six files (`index.html`, `timer.html`, `workout.html`, `app.js`, `workout.js`, `style.css`) into the upload area.
 3. Scroll down and click **Commit changes**.
 
 ### 3. Turn on GitHub Pages
@@ -68,7 +68,7 @@ Run these commands from this project folder:
 
 ```bash
 git init
-git add index.html style.css app.js DEPLOY.md
+git add *.html *.js style.css DEPLOY.md
 git commit -m "Interval timer"
 git branch -M main
 git remote add origin https://github.com/<your-github-username>/interval-timer.git
@@ -101,7 +101,7 @@ The live site updates a minute or two after each push.
 | Problem | Fix |
 |---|---|
 | The URL shows **404** | Wait a few minutes after turning Pages on. Check that `index.html` is at the top level of the repo and that the file name is all lowercase. |
-| The page loads but has no styling, or the buttons do nothing | Check that `style.css` and `app.js` were uploaded next to `index.html`, with exactly those names. |
+| The page loads but has no styling, or the buttons do nothing | Check that all six files were uploaded side by side at the top level, with exactly those names. |
 | The Pages settings ask you to upgrade | The repository is private. Change it to public under **Settings → General → Danger Zone → Change visibility**. |
 | Changes don't show up | Wait a minute, then do a hard refresh: <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> on Mac, <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> on Windows. |
 | No sound on a phone | Turn off the phone's silent switch or mode. Browsers only allow sound after you tap a button, which is why the sound starts when you press **Start**. |
@@ -120,3 +120,13 @@ Both of these are free for a small site like this one:
 ## Optional: a custom domain
 
 If you own a domain (e.g. `mytimer.com`), open GitHub's **Settings → Pages → Custom domain** and follow the DNS instructions GitHub shows. You don't need one: the free `github.io` address works fine.
+
+## Where workout data is stored
+
+The workout log saves everything in **your browser's local storage** on the device you use. Nothing is sent to a server. This means:
+
+- Each browser and device has its own separate log.
+- Clearing your browser's site data deletes the log.
+- Safari may delete it after about 7 days without a visit. Adding the site to your home screen (Share → Add to Home Screen) prevents this.
+
+Use **Export backup** on the workout page now and then to download a `.json` copy. **Import backup** restores it, or moves your log to another device.
