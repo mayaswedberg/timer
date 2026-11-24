@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#111318">
+  <title>Interval Timer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-phase="idle">
+  <main class="app">
+    <!-- Setup screen -->
+    <section id="setup" class="panel">
+      <h1>Interval Timer</h1>
+
+      <form id="setup-form" novalidate>
+        <div class="field">
+          <label for="work-min">Work</label>
+          <div class="time-input">
+            <input id="work-min" type="number" min="0" max="99" inputmode="numeric" aria-label="Work minutes">
+            <span class="colon">:</span>
+            <input id="work-sec" type="number" min="0" max="59" inputmode="numeric" aria-label="Work seconds">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="rest-min">Rest</label>
+          <div class="time-input">
+            <input id="rest-min" type="number" min="0" max="99" inputmode="numeric" aria-label="Rest minutes">
+            <span class="colon">:</span>
+            <input id="rest-sec" type="number" min="0" max="59" inputmode="numeric" aria-label="Rest seconds">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="rounds">Rounds</label>
+          <div class="stepper">
+            <button type="button" class="step" data-target="rounds" data-step="-1" aria-label="Fewer rounds">−</button>
+            <input id="rounds" type="number" min="1" max="99" inputmode="numeric">
+            <button type="button" class="step" data-target="rounds" data-step="1" aria-label="More rounds">+</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="prep">Get ready <small>(sec)</small></label>
+          <div class="stepper">
+            <button type="button" class="step" data-target="prep" data-step="-5" aria-label="Less prep time">−</button>
+            <input id="prep" type="number" min="0" max="60" inputmode="numeric">
+            <button type="button" class="step" data-target="prep" data-step="5" aria-label="More prep time">+</button>
+          </div>
+        </div>
+
+        <p class="summary">Total time <strong id="total">0:00</strong></p>
+        <p id="error" class="error" role="alert" hidden></p>
+
+        <button class="btn primary big" type="submit">Start</button>
+      </form>
+    </section>
+
+    <!-- Running timer screen -->
+    <section id="timer" class="panel" hidden>
+      <div class="topbar">
+        <span id="round" class="round">Round 1 / 1</span>
+        <button id="sound" class="btn ghost small" type="button" aria-pressed="true">Sound on</button>
+      </div>
+
+      <div class="ring-wrap">
+        <svg class="ring" viewBox="0 0 100 100" aria-hidden="true">
+          <circle class="track" cx="50" cy="50" r="45"></circle>
+          <circle id="progress" class="progress" cx="50" cy="50" r="45"></circle>
+        </svg>
+        <div class="readout" aria-live="polite">
+          <div id="phase-label" class="phase-label">Work</div>
+          <div id="time" class="time">0:00</div>
+          <div id="next" class="next"></div>
+        </div>
+      </div>
+
+      <p class="total-left">Remaining <span id="total-left">0:00</span></p>
+
+      <div class="controls">
+        <button id="reset" class="btn secondary" type="button">Reset</button>
+        <button id="toggle" class="btn primary" type="button">Pause</button>
+        <button id="skip" class="btn secondary" type="button">Skip</button>
+      </div>
+      <p class="hint">Space: pause/resume · S: skip · Esc: reset</p>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
