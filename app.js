@@ -6,6 +6,11 @@
   const STORAGE_KEY = "interval-timer-settings";
   const DEFAULTS = { work: 30, rest: 15, rounds: 8, prep: 5 };
 
+  // Times in seconds. Presets don't change the "Get ready" value.
+  const PRESETS = [
+    { name: "Core Workout", work: 40, rest: 20, rounds: 10 },
+  ];
+
   const RING_RADIUS = 45;
   const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
 
@@ -13,6 +18,7 @@
   const el = {
     setup: $("setup"),
     timer: $("timer"),
+    presets: $("presets"),
     form: $("setup-form"),
     workMin: $("work-min"),
     workSec: $("work-sec"),
@@ -102,7 +108,49 @@
   }
 
   function updateTotal() {
-    el.total.textContent = fmt(totalDuration(readForm()));
+    const s = readForm();
+    el.total.textContent = fmt(totalDuration(s));
+    updatePresetHighlight(s);
+  }
+
+  // ---------- Presets ----------
+  function fmtShort(seconds) {
+    return seconds < 60 ? `${seconds}s` : fmt(seconds);
+  }
+
+  function presetMatches(p, s) {
+    return p.work === s.work && p.rest === s.rest && p.rounds === s.rounds;
+  }
+
+  function updatePresetHighlight(s) {
+    el.presets.querySelectorAll(".preset").forEach((btn, i) => {
+      btn.setAttribute("aria-pressed", String(presetMatches(PRESETS[i], s)));
+    });
+  }
+
+  function renderPresets() {
+    PRESETS.forEach((p) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "preset";
+      btn.setAttribute("aria-pressed", "false");
+
+      const name = document.createElement("span");
+      name.className = "preset-name";
+      name.textContent = p.name;
+
+      const detail = document.createElement("span");
+      detail.className = "preset-detail";
+      detail.textContent = `${fmtShort(p.work)} work · ${fmtShort(p.rest)} rest · ${p.rounds} rounds`;
+
+      btn.append(name, detail);
+      btn.addEventListener("click", () => {
+        writeForm({ ...readForm(), work: p.work, rest: p.rest, rounds: p.rounds });
+        el.error.hidden = true;
+        updateTotal();
+      });
+      el.presets.append(btn);
+    });
   }
 
   // ---------- Audio ----------
@@ -317,6 +365,7 @@
   }
 
   // ---------- Events ----------
+  renderPresets();
   writeForm(settings);
   updateTotal();
 
